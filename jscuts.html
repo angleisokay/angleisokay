@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <p id="result"></p>
+
+    <script>
+        /* LOGIC 🟡
+            Apps: String, app name in English. Will be translated.
+        */
+
+        // JSCuts Interpreter --- Executer on Shortcuts
+        let variables = {};
+        let index = [];
+
+        // Actions
+        function receive(data) {
+            variables[data.key] = data.value;
+            index = variables
+        };
+        function show(text) {
+            index = {
+                action: "show",
+                text
+            }
+        };
+        function showAlert(text, title, cancel) {
+            index = {
+                action: "showAlert",
+                text,
+                title,
+                cancel
+            }
+        };
+        function variable(key, value) {
+            variables.key = value;
+            index = {action: "nothing"}
+        }
+        function ask(type, prompt, defaultAnswer, multipleLines) {
+            index = {
+                action: "ask",
+                type,
+                prompt,
+                defaultAnswer,
+                multipleLines
+            }
+        };
+        function count(type, input) {
+            index = {
+                action: "count",
+                type,
+                input
+            }
+        };
+        function menu(prompt, options) {
+            index = {
+                action: "menu",
+                prompt,
+                options
+            }
+        }
+        function wait(sec) {
+            index = {
+                action: "wait",
+                sec
+            }
+        }
+        function convertTimeZone(time, origin, destination) {
+            index = {
+                action: "convertTimeZone",
+                origin,
+                destination
+            } 
+        }
+        function showDefinition(word) {
+            index = {
+                action: "showDefinition",
+                word
+            }
+        }
+        function getEmojiName(emoji) {
+            index = {
+                action: "getEmojiName",
+                emoji
+            }
+        }
+        function correctSpelling(text) {
+            index = {
+                action: "correctSpelling",
+                text
+            }
+        }
+        function dictate(language, stopListening) {
+            index = {
+                action: "dictate",
+                language,
+                stopListening
+            }
+        }
+        function transcribe(audio) {
+            index = {
+                action: "transcribe",
+                audio
+            }
+        }
+        function detectLanguage(text) {
+            index = {
+                action: "detectLanguage",
+                text
+            }
+        }
+        function quickLook(content, fullScreen) {
+            index = {
+                action: "quickLook",
+                content,
+                fullScreen
+            }
+        }
+        function contentGraph(content) {
+            index = {
+                action: "contentGraph",
+                content
+            }
+        }
+        function getShortcuts(group) {
+            index = {
+                action: "getShortcuts",
+                group
+            }
+        }
+        function whatsOnScreen() {index = {action: "whatsOnScreen"}}
+        function encodeBase64(content, lineBreaks) {
+            index = {
+                action: "encodeBase64",
+                content,
+                lineBreaks
+            }
+        }
+        function decodeBase64(content) {
+            index = {
+                action: "decodeBase64",
+                content
+            }
+        }
+        function hash(type, content) {
+            index = {
+                action: "hash",
+                type,
+                content
+            }
+        }
+        function stop() {index = {action: "stop"}}
+        function waitToReturn() {index = {action: "waitToReturn"}}
+        function ssh(script, host, port, user, auth, password, input) {
+            index = {
+                action: "ssh",
+                script,
+                host,
+                port,
+                user,
+                auth,
+                password,
+                input
+            }
+        }
+        function setBasicSetting(setting, mode) {
+            index = {
+                action: "setBasicSetting",
+                setting,
+                mode
+            }
+        }
+        function toggleBasicSetting(setting) {
+            index = {
+                action: "toggleBasicSetting",
+                setting
+            }
+        }
+        function shutDown() {index = {action: "shutDown"}}
+        function restart() {index = {action: "restart"}}
+        function setAirDrop(setting) {
+            index = {
+                action: "setAirDrop",
+                setting
+            }
+        }
+        function setAppearance(mode) {
+            index = {
+                action: "setAppearance",
+                mode
+            }
+        }
+        function setBrightness(percent) {
+            index = {
+                action: "setAppearance",
+                percent
+            }
+        }
+        function lock() {index = {action: "lock"}}
+        function openApp(app) {
+            index = {
+                action: "openApp",
+                app
+            }
+        }
+        function homeScreen() {index = {action: "homeScreen"}}
+        function takePhoto(amount, camera, preview) {
+            index = {
+                action: "takePhoto",
+                amount,
+                camera,
+                preview
+            }
+        }
+        function takeVideo(camera, quality, startImmediately) {
+            index = {
+                action: "takeVideo",
+                camera,
+                quality,
+                startImmediately
+            }
+        }
+        function recordAudioEndManually(quality, startImmediately) {
+            index = {
+                action: "recordAudioEndManually",
+                quality,
+                startImmediately
+            }
+        }
+        function recordAudioEndAutomatically(quality, startImmediately, sec) {
+            index = {
+                action: "recordAudioEndAutomatically",
+                quality,
+                startImmediately,
+                sec
+            }
+        }
+        function takeScreenshot() {index = {action: "takeScreenshot"}}
+        function getDeviceDetails(detail) {
+            index = {
+                action: "getDeviceDetails",
+                detail
+            }
+        }
+        function getBatteryStatus(detail) {
+            index = {
+                action: "getBatteryStatus",
+                detail
+            }
+        }
+        function getApp(detail) {
+            index = {
+                action: "getApp",
+                detail
+            }
+        }
+        function getOrientation() {index = {action: "getOrientation"}}
+        function getCurrentFocus() {index = {action: "getCurrentFocus"}}
+        function copy(content, localOnly) {
+            index = {
+                action: "copy",
+                content,
+                localOnly
+            }
+        }
+        function pasteHere() {index = {action: "pasteHere"}}
+        function notify(text, tite, sound, attachment) {
+            index = {
+                action: "notify",
+                text,
+                title,
+                sound,
+                attachment
+            }
+        }
+        function playSound(sound) {
+            index = {
+                action: "playSound",
+                sound
+            }
+        }
+        function getIP(address, type) {
+            index = {
+                action: "getIP",
+                address,
+                type
+            }
+        }
+        function getNetworkDetails(detail) {
+            index = {
+                action: "getNetworkDetails",
+                detail
+            }
+        }
+        function resetCellularDataUsageStats() {index = {action: "resetCellularDataUsageStats"}}
+        function setWallpaper(image, lockScreen, homeScreen, preview, crop, blur) {
+            index = {
+                action: "setWallpaper",
+                image,
+                lockScreen,
+                homeScreen,
+                preview,
+                crop,
+                blur
+            }
+        }
+        function getWallpapers(type) {
+            index = {
+                action: "getWallpapers",
+                type
+            }
+        }
+        function switchWallpaper() {
+            index = {
+                action: "switchWallpapers", 
+                type
+            }
+        }
+        function getCurrentLocation(precisionMeters) {
+            index = {
+                action: "getCurrentLocation",
+                precisionMeters
+            }
+        }
+        function getPreciseCurrentLocation() {
+            index = {
+                action: "getCurrentLocation",
+                precisionMeters: "best"
+            }
+        }
+        function findPlacesNear(places, location, radiusKm) {
+            index = {
+                action: "findPlacesNear",
+                precisionMeters
+            }
+        }
+        function openDirections(transportType, origin, destination) {
+            index = {
+                action: "openDirections",
+                transportType,
+                origin,
+                destination
+            }
+        }
+        function openLocation(location) {
+            index = {
+                action: "openLocation",
+                location
+            }
+        }
+        function getLocationDetails(location, detail) {
+            index = {
+                action: "getLocationDetails",
+                location,
+                detail
+            }
+        }
+        function getMapsURL(location) {
+            index = {
+                action: "getMapsURL",
+                location
+            }
+        }
+        function getAddresses(input) {
+            index = {
+                action: "getAddresses",
+                input
+            }
+        }
+        function getDistance(origin, destination, routeType, unit, precisionMeters) {
+            index = {
+                action: "getDistance",
+                origin,
+                destination,
+                routeType,
+                unit,
+                precisionMeters
+            }
+        }
+        function getPreciseDistance(origin, destination, routeType, unit) {
+            index = {
+                action: "getPreciseDistance",
+                origin,
+                destination,
+                routeType,
+                unit
+            }
+        }
+        function getHalfwayPoint(firstLocation, secondLocation) {
+            index = {
+                action: "getHalfwayPoint",
+                firstLocation,
+                secondLocation
+            }
+        }
+        function getTravelTime(transportType, origin, destination) {
+            index = {
+                action: "getTravelTime",
+                transportType,
+                origin,
+                destination
+            }
+        }
+        function convertImage(image, format, qualityPercent, preserveMetadata) {
+            index = {
+                action: "convertImage",
+                image,
+                format,
+                qualityPercent,
+                preserveMetadata
+            }
+        }
+        function getImageDetail(image, detail) {
+            index = {
+                action: "getImageDetail",
+                image,
+                detail
+            }
+        }
+        function getImages(content) {
+            index = {
+                action: "getImages",
+                content
+            }
+        }
+        function makeImageFromPDF(format, pdf, color, dotsPerInch) {
+            index = {
+                action: "makeImageFromPDF",
+                format,
+                pdf,
+                color,
+                dotsPerInch
+            }
+        }
+        function makeImageFromRichText(richText, width, height) {
+            index = {
+                action: "makeImageFromRichText",
+                richText,
+                width,
+                height
+            }
+        }
+        function extractTextFromImage(image) {
+            index = {
+                action: "extractTextFromImage",
+                image
+            }
+        }
+        function markup(document) {
+            index = {
+                action: "markup",
+                document
+            }
+        }
+        function combineImages(content, direction, spacing) {
+            index = {
+                action: "combineImages",
+                content,
+                direction,
+                spacing
+            }
+        }
+        function cropImage(image, position, width, height) {
+            index = {
+                action: "cropImage",
+                image,
+                position,
+                width,
+                height
+            }
+        }
+        function flipImage(image, direction) {
+            index = {
+                action: "flipImage",
+                image,
+                direction
+            }
+        }
+        function maskRoundedImage(image, cornerRadius) {
+            index = {
+                action: "maskImage",
+                image,
+                cornerRadius
+            }
+        }
+        function maskImage(image, shape) {
+            index = {
+                action: "maskImage",
+                image,
+                shape
+            }
+        }
+        function maskImageWithCustomImage(image1, image2) {
+            index = {
+                action: "maskImageWithCustomImage",
+                image1,
+                image2
+            }
+        }
+        function overlayImageOnImage(image1, image2, showImageEditor) {
+            index = {
+                action: "overlayImageOnImage",
+                image1,
+                image2,
+                showImageEditor
+            }
+        }
+        function overlayTextOnImage(text, image, location, font, fontSize, textAlignment, fontHex, rotation, strokeWidth, strokeColor) {
+            index = {
+                action: "overlayTextOnImage",
+                text,
+                image,
+                location,
+                font,
+                fontSize,
+                textAlignment,
+                fontHex,
+                rotation,
+                strokeWidth,
+                strokeColor
+            }
+        }
+        function resizeImageSize(image, width, height) {
+            index = {
+                action: "resizeImageSize",
+                image,
+                width,
+                height
+            }
+        }
+        function resizeImagePercent(image, percent) {
+            index = {
+                action: "resizeImagePercentage",
+                image,
+                percent
+            }
+        }
+        function resizeImageLongestEdge(image, longestEdge) {
+            index = {
+                action: "resizeImageLongestEdge",
+                image,
+                longestEdge
+            }
+        }
+        function rotateImage(image, degrees) {
+            index = {
+                action: "rotateImage",
+                image,
+                degrees
+            }
+        }
+        function removeBG(image, crop) {
+            index = {
+                action: "removeBG",
+                image,
+                crop
+            }
+        }
+        function makeGIF(content, spf) {
+            index = {
+                action: "makeGIF",
+                content,
+                spf
+            }
+        }~
+        function makeVideoFromGIF(gif, loopTimes) {
+            index = {
+                action: "makeVideoFromGIF",
+                gif,
+                loopTimes
+            }
+        }
+        function addImageToGIF(image, gif, delayTime) {
+            index = {
+                action: "addImageToGIF",
+                imgae,
+                gif,
+                delayTime
+            }
+        }
+        function getFramesFromGIF(gif) {
+            index = {
+                action: "getFramesFromGIF",
+                gif
+            }
+        }
+        function saveToPhotos(photo) {
+            index = {
+                action: "saveToPhotos",
+                photo
+            }
+        }
+        function selectPhotos(includeImages, includeLivePhotos, includeVideos, selectMultiple) {
+            index = {
+                action: "selectPhotos",
+                includeImages,
+                includeLivePhotos,
+                includeVideos,
+                selectMultiple
+            }
+        }
+        function getLatestPhotos(amount, includeScreenshots) {
+            index = {
+                action: "getLatestPhotos",
+                amount,
+                includeScreenshots
+            }
+        }
+        function getLatestVideos(amount) {
+            index = {
+                action: "getLatestVideos",
+                amount
+            }
+        }
+        function getLatestScreenshots(amount) {
+            index = {
+                action: "getLatestScreenshots",
+                amount
+            }
+        }
+        function getLatestBurst(amount) {
+            index = {
+                action: "getLatestBurst",
+                amount
+            }
+        }
+        function getLatestLivePhotos(amount) {
+            index = {
+                action: "getLatestLivePhotos",
+                amount
+            }
+        }
+        function getLatestImport() {index = {action: "getLatestImport"}}
+        function encodeMedia(media, audioOnly, speed, metadata) {
+            index = {
+                action: "encodeMedia",
+                media,
+                audioOnly,
+                speed,
+                metadata
+            }
+        }
+        function trimMedia(media) {
+            index = {
+                action: "trimMedia",
+                media
+            }
+        }
+        function setVolume(media, ringtone, volume) {
+            index = {
+                action: "setVolume",
+                media,
+                ringtone,
+                volume
+            }
+        }
+        function playPause() {index = {action: "playPause"}}
+        function seekToTime(sec) {
+            index = {
+                action: "seekToTime",
+                sec
+            }
+        }
+        function seekForward(sec) {
+            index = {
+                action: "seekForward",
+                sec
+            }
+        }
+        function seekBackward(sec) {
+            index = {
+                action: "seekBackward",
+                sec
+            }
+        }
+        function skipBackToTheBeginning() {index = {action: "skipBackToTheBeginning"}}
+        function skipBackToPreviousSong() {index = {action: "skipBackToPreviousSong"}}
+        function skipForward() {index = {action: "skipForward"}}
+        function share(content) {
+            index = {
+                action: "share",
+                content
+            }
+        }
+        function sendCustomizableEmail(message, recipients, subject) {
+            index = {
+                action: "sendCustomizableEmail",
+                message,
+                recipients,
+                subject
+            }
+        }
+        function sendPredefinedEmail(message, recipients, subject, from, cc, bcc) {
+            index = {
+                action: "sendPredefinedEmail",
+                message,
+                recipients,
+                subject,
+                from,
+                cc,
+                bcc
+            }
+        }
+        function airDrop(content) {
+            index = {
+                action: "airDrop",
+                content
+            }
+        }
+        function postToSharedAlbum(images) {
+            index = {
+                action: "postToSharedAlbum",
+                images
+            }
+        }
+        const indexActions = {
+            log(text) {
+                index = {
+                    action: "nothing",
+                    text
+                }
+            }
+        } 
+        function generateQRCode(text) {
+            index = {
+                action: "generateQRCode",
+                text
+            }
+        }
+        function scanQRCode() {index = {action: "scanQRCode"}}
+        function print(content) {
+            index = {
+                action: "print",
+                content
+            }
+        }
+        function optimizePDF(pdf) {
+            index = {
+                action: "optimizePDF",
+                pdf
+            }
+        }
+        function splitPDFIntoPages(pdf) {
+            index = {
+                action: "splitPDFIntoPages",
+                pdf
+            }
+        }
+        function addToBooks(pdf) {
+            index = {
+                action: "addToBooks",
+                pdf
+            }
+        }
+        function getTextFromPDF(pdf, combinePages, pageHeader, pageFooter) {
+            index = {
+                action: "getTextFromPDF",
+                pdf,
+                combinePages,
+                pageHeader,
+                pageFooter
+            }
+        }
+        function selectFiles(multiple) {
+            index = {
+                action: "selectFiles",
+                multiple
+            }
+        }
+        function selectFolders(multiple) {
+            index = {
+                action: "selectFolders",
+                multiple
+            }
+        }
+        function saveFile(file, overwriteIfExists, iCloud, local, path) {
+            index = {
+                action: "saveFile",
+                overwriteIfExists,
+                iCloud,
+                local,
+                path
+            }
+        }
+        function getFile(iCloud, local, path, errorIfNotFound) {
+            index = {
+                action: "getFile",
+                iCloud,
+                local,
+                path,
+                errorIfNotFound
+            }
+        }
+        function showHTML(html) {
+            index = {
+                action: "showHTML",
+                html
+            }
+        }
+        function getHTMLWebpage(html) {
+            index = {
+                action: "getHTMLWebpage",
+                html
+            }
+        }
+        function runJSOnWebpage(html) {
+            index = {
+                action: "runJSOnWebpage",
+                html
+            }
+        }
+        function compress(format, content, name) {
+            index = {
+                action: "compress",
+                format,
+                content,
+                name
+            }
+        }
+        function extract(archive) {
+            index = {
+                action: "extract",
+                archive
+            }
+        }
+        
+
+        // VeloxOS Actions
+        const appStorage = {
+            saveTemporary(file, overwriteIfExists, path) {
+                index = {
+                    action: "appStorage.saveTemporary",
+                    overwriteIfExists,
+                    path
+                }
+            },
+            savePermanent(file, overwriteIfExists, path) {
+                index = {
+                    action: "appStorage.savePermanent",
+                    file,
+                    overwriteIfExists,
+                    path
+                }
+            },
+            getFile(storageType, path, errorIfNotFound) {
+                index = {
+                    action: "appStorage.getFile",
+                    path,
+                    errorIfNotFound
+                }
+            }
+        }
+        const appData = {
+            saveData(key, value) {
+                index = {
+                    action: "appData.saveData",
+                    key,
+                    value
+                }
+            },
+            getData(key) {
+                index = {
+                    acton: "appData.getData",
+                    key
+                }
+            },
+            getAllData() {
+                index = {
+                    action: "getAllData"
+                }
+            }
+        }
+        const crossappAPI = {
+            crossappFetch(appName, endpoint, parameters) {
+                index = {
+                    action: "crossappFetch",
+                    appName,
+                    endpoint,
+                    parameters
+                }
+            },
+            crossappAPIData(appName) {
+                index = {
+                    action: "crossappAPIData",
+                    appName
+                }
+            }
+        }
+        const veloxOS = {
+            getSetting(name) {
+                index = {
+                    action: "getSetting",
+                    name
+                }
+            },
+            setSetting(name, value) {
+                index = {
+                    action: "setSetting",
+                    name,
+                    value
+                }
+            },
+            getData(name) {
+                index = {
+                    action: "getData",
+                    name
+                }
+            }
+        }
+
+        // Dynamically modified code line:
+        show("Hello, World!");
+
+        // Show result to be processed
+        document.getElementById("result").innerHTML = JSON.stringify(index, null, 2);
+    </script>
+</body>
+</html>
