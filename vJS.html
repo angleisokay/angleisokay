@@ -7,8 +7,11 @@
 <body>
     <p id="console"></p>
     <script>
-        let variables = {}
+        let variables = {
+            received: null
+        }
         let con = document.getElementById("console");
+        let runAllowed = true;
 
         // the essential stuff for the things and stuff
         const vconsole = {
@@ -29,6 +32,32 @@
             varLog() {
                 this.data.actions.push({action: "varLog", variables})
                 this.render()
+            },
+            addAction(dict) {
+                if (runAllowed === true) {
+                    this.data.actions.push(dict)
+                    this.render()
+                }
+            },
+            receive(data) {
+                variables.received = data
+            },
+            prob() {
+                runAllowed = false
+            }
+        }
+        const scripting = {
+            show(msg) {
+                addAction({action: "show", msg})
+            },
+            showAlert(msg, title, cancel) {
+                addAction({action: "showAlert", msg, title, cancel})
+            },
+            ask(type, msg, placeholder, multipleLines) {
+                addAction({action: "ask", type, msg, placeholder, multipleLines})
+            },
+            menu(options, prompt) {
+                addAction({})
             }
         }
     </script>
