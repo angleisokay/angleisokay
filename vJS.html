@@ -8,15 +8,27 @@
     <p id="console"></p>
     <script>
         let variables = {}
-        let con = document.getElementById("console").innerHTML
+        let con = document.getElementById("console");
 
         // the essential stuff for the things and stuff
         const vconsole = {
-            log(string) {
-                con.appendChild(string)
+            data: {
+                actions: []
+            },
+            log(msg) {
+                this.data.actions.push({action: "log", msg})
+                this.render()              
+            },
+            render() {
+                con.textContent = JSON.stringify(this.data, null, 2)
             },
             kill() {
-                con.
+                this.data.actions = []
+                this.render()                    
+            },
+            varLog() {
+                this.data.actions.push({action: "varLog", variables})
+                this.render()
             }
         }
     </script>
