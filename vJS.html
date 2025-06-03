@@ -7,9 +7,7 @@
 <body>
     <p id="console"></p>
     <script>
-        let variables = {
-            received: null
-        }
+        let variables = variables
         let con = document.getElementById("console");
         let runAllowed = true;
 
@@ -19,7 +17,7 @@
                 actions: []
             },
             log(msg) {
-                this.data.actions.push({action: "log", msg})
+                addAction({action: "log", msg})
                 this.render()              
             },
             render() {
@@ -33,19 +31,26 @@
                 this.data.actions.push({action: "varLog", variables})
                 this.render()
             },
-            addAction(dict) {
-                if (runAllowed === true) {
-                    this.data.actions.push(dict)
-                    this.render()
-                }
-            },
             receive(data) {
                 variables.received = data
             },
-            prob() {
+            prob(separator) {
+		addAction({action: "prob", separator})
                 runAllowed = false
             }
         }
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function addAction(dict) {
+            if (runAllowed === true) {
+                vconsole.data.actions.push(dict)
+                vconsole.render()
+            }
+        }
+
+        // Actions
         const scripting = {
             show(msg) {
                 addAction({action: "show", msg})
@@ -53,13 +58,17 @@
             showAlert(msg, title, cancel) {
                 addAction({action: "showAlert", msg, title, cancel})
             },
-            ask(type, msg, placeholder, multipleLines) {
-                addAction({action: "ask", type, msg, placeholder, multipleLines})
+            ask(msg, placeholder, multipleLines) {
+                addAction({action: "ask", msg, placeholder, multipleLines})
             },
             menu(options, prompt) {
-                addAction({})
+                addAction({action: "menu", options, prompt})
+            },
+            showDefinition(word) {
+                addAction({action: "showDefinition", word})
             }
         }
+	±±±±±±
     </script>
 </body>
 </html>
